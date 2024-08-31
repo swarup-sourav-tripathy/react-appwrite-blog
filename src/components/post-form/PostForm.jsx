@@ -1,9 +1,10 @@
-import React , {useCallback} from "react";
-import {useForm} from 'react-hook-form';
-import {Button , Input , Select , RTE} from '../index';
+import React, { useCallback } from "react";
+import { useForm } from 'react-hook-form';
+import { Button, Input, Select, RTE } from '../index';
 import { service as appwriteService } from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import authService from "../../appwrite/auth";
 
 export default function PostForm({ post }) {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
@@ -16,47 +17,50 @@ export default function PostForm({ post }) {
     });
 
     const navigate = useNavigate();
-    const userData = useSelector((state) => state.auth.userData);
-    console.log(userData , "user");
-    
+
+
     const submit = async (data) => {
-       try {
-         if (post) {
-             const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
- 
-             if (file) {
-                 appwriteService.deleteFile(post.featuredImage);
-             }
- 
-             const dbPost = await appwriteService.updatePost(post.$id, {
-                 ...data,
-                 featuredimage: file ? file.$id : undefined,
-             });
- 
-             if (dbPost) {
-                 navigate(`/post/${dbPost.$id}`);
-             }
-         } else {
-             const file = await appwriteService.uploadFile(data.image[0]);
+        try {
+            if (post) {
+                // console.log(post);
+                
+                const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
+
+                if (file) {
+                    appwriteService.deleteFile(post.featuredimage);
+                }
+
+                const dbPost = await appwriteService.updatePost(post.$id, {
+                    ...data,
+                    featuredimage: file ? file.$id : undefined,
+                });
+
+                if (dbPost) {
+                    navigate(`/post/${dbPost.$id}`);
+                }
+            } else {
+                const file = await appwriteService.uploadFile(data.image[0]);
+                const userData = await authService.getCurrentUser()
+                // console.log(userData, "user");
                 // console.log(file);
-                
-             if (file) {
-                 const fileId = file.$id;
-                //  console.log(fileId);
-                 
-                 data.featuredimage = fileId;
-                 // console.log(data.featuredImage);
-                 const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id });
-                // console.log(dbPost);
-                
-                 if (dbPost) {
-                     navigate(`/post/${dbPost.$id}`);
-                 }
-             }
-         }
-       } catch (error) {
-        console.log("submit error: ",error);
-       }
+
+                if (file) {
+                    const fileId = file.$id;
+                    //  console.log(fileId);
+
+                    data.featuredimage = fileId;
+                    // console.log(data.featuredImage);
+                    const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id });
+                    // console.log(dbPost);
+
+                    if (dbPost) {
+                        navigate(`/post/${dbPost.$id}`);
+                    }
+                }
+            }
+        } catch (error) {
+            console.log("submit error: ", error);
+        }
     };
 
     const slugTransform = useCallback((value) => {
@@ -81,8 +85,8 @@ export default function PostForm({ post }) {
     }, [watch, slugTransform, setValue]);
 
     return (
-        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
+        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap flex-col md:flex-row ">
+            <div className="md:w-2/3 px-2">
                 <Input
                     label="Tittle :"
                     placeholder="Tittle"
@@ -100,7 +104,7 @@ export default function PostForm({ post }) {
                 />
                 <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
             </div>
-            <div className="w-1/3 px-2">
+            <div className="md:w-1/3 px-2">
                 <Input
                     label="Featured Image :"
                     type="file"
