@@ -16,37 +16,37 @@ function Home() {
     const [posts, setPosts] = useState([])
     const items = [
         {
-            src: "src/Pages/pexels-hatice-baran-153179658-17683947.jpg",
+            src: "/pexels-hatice-baran-153179658-17683947.jpg",
             alt: "post1",
             tittle: "Fresh air"
         },
         {
-            src: "src/Pages/free-photo-of-pine-tree-branches-with-cones-covered-in-snow-in-winter.jpeg",
+            src: "/free-photo-of-pine-tree-branches-with-cones-covered-in-snow-in-winter.jpeg",
             alt: "post2",
             tittle: "Winter"
         },
         {
-            src: "src/Pages/pexels-hugo-silva-1095125615-27893289.jpg",
+            src: "/pexels-hugo-silva-1095125615-27893289.jpg",
             alt: "post3",
             tittle: "Ocean"
         },
         {
-            src: "src/Pages/pexels-necip-duman-3299706-26562785.jpg",
+            src: "/pexels-necip-duman-3299706-26562785.jpg",
             alt: "post7",
             tittle: "Exploring"
         },
         {
-            src: "src/Pages/pexels-raymond-petrik-1448389535-27405284.jpg",
+            src: "/pexels-raymond-petrik-1448389535-27405284.jpg",
             alt: "post4",
             tittle: "Coffee"
         },
         {
-            src: "src/Pages/pexels-diogo-miranda-2044514-20703786.jpg",
+            src: "/pexels-diogo-miranda-2044514-20703786.jpg",
             alt: "post5",
             tittle: "Diwali"
         },
         {
-            src: "src/Pages/pexels-emareynares-18387848.jpg",
+            src: "/pexels-emareynares-18387848.jpg",
             alt: "post6",
             tittle: "Mountain"
         }
