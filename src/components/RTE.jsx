@@ -17,6 +17,7 @@ export default function RTE({ name, control, label, defaultValue = "" }) {
                         apiKey= {conf.tinyMceApiKey}
                         initialValue={defaultValue}
                         
+                        
                         init={{
                             
                             initialValue: defaultValue,
